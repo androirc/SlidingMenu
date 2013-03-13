@@ -1008,4 +1008,18 @@ public class CustomViewAbove extends ViewGroup {
 		return false;
 	}
 
+	@Override
+	public boolean canScrollHorizontally(int direction) {
+		if (mScrollX == 0)
+			return false;
+
+		if (direction > 0)
+			return mScrollX < 0;
+
+		if (direction < 0)
+			return mScrollX > 0;
+
+		return super.canScrollHorizontally(direction);
+	}
+
 }
