@@ -3,6 +3,7 @@ package com.slidingmenu.lib;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -1008,6 +1009,7 @@ public class CustomViewAbove extends ViewGroup {
 		return false;
 	}
 
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	public boolean canScrollHorizontally(int direction) {
 		if (mScrollX == 0)
@@ -1019,7 +1021,10 @@ public class CustomViewAbove extends ViewGroup {
 		if (direction < 0)
 			return mScrollX > 0;
 
-		return super.canScrollHorizontally(direction);
+		if (Build.VERSION.SDK_INT >= 14)
+			return super.canScrollHorizontally(direction);
+		else
+			return false;
 	}
 
 }
