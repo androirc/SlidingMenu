@@ -1012,6 +1012,23 @@ public class CustomViewAbove extends ViewGroup {
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	public boolean canScrollHorizontally(int direction) {
+		if (mTouchMode == SlidingMenu.TOUCHMODE_NONE)
+			return false;
+
+		if (mTouchMode == SlidingMenu.TOUCHMODE_FULLSCREEN) {
+			final int mode = mViewBehind.getMode();
+			if (mode == SlidingMenu.LEFT_RIGHT)
+				return true;
+
+			if (mode == SlidingMenu.LEFT)
+				return direction < 0 || mScrollX < 0;
+
+			if (mode == SlidingMenu.RIGHT)
+				return direction > 0 || mScrollX > 0;
+
+			return true;
+		}
+
 		if (mScrollX == 0)
 			return false;
 
