@@ -72,8 +72,6 @@ public class SlidingMenu extends RelativeLayout {
 
 	private OnCloseListener mCloseListener;
 
-	private OnClosedListener mClosedListener;
-
 	/**
 	 * The listener interface for receiving onOpen events.
 	 * The class that is interested in processing a onOpen
@@ -211,7 +209,7 @@ public class SlidingMenu extends RelativeLayout {
 		// register the CustomViewBehind with the CustomViewAbove
 		mViewAbove.setCustomViewBehind(mViewBehind);
 		mViewBehind.setCustomViewAbove(mViewAbove);
-		mViewBehind.setVisibility(View.GONE);
+		mViewBehind.setVisibility(View.INVISIBLE);
 		mViewAbove.setOnPageChangeListener(new OnPageChangeListener() {
 			public static final int POSITION_OPEN = 0;
 			public static final int POSITION_CLOSE = 1;
@@ -225,15 +223,6 @@ public class SlidingMenu extends RelativeLayout {
 				} else if (position == POSITION_CLOSE && mCloseListener != null) {
 					mCloseListener.onClose();
 				}
-			}
-		});
-
-		mViewAbove.setOnClosedListener(new OnClosedListener() {
-			@Override
-			public void onClosed() {
-				mViewBehind.setVisibility(View.GONE);
-				if (mClosedListener != null)
-					mClosedListener.onClosed();
 			}
 		});
 
@@ -497,7 +486,6 @@ public class SlidingMenu extends RelativeLayout {
 	 * @param animate true to animate the transition, false to ignore animation
 	 */
 	public void showMenu(boolean animate) {
-		mViewAbove.setVisibility(View.VISIBLE);
 		mViewAbove.setCurrentItem(0, animate);
 	}
 
@@ -900,7 +888,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @param listener the new OnClosedListener
 	 */
 	public void setOnClosedListener(OnClosedListener listener) {
-		mClosedListener = listener;
+		mViewAbove.setOnClosedListener(listener);
 	}
 
 	public static class SavedState extends BaseSavedState {
