@@ -31,6 +31,11 @@ public class CustomViewBehind extends ViewGroup {
 	private CanvasTransformer mTransformer;
 	private boolean mChildrenEnabled;
 
+	private int mWidthPercent;
+	private int mMinWidth;
+	private int mMaxWidth;
+	private int mWidth;
+
 	public CustomViewBehind(Context context) {
 		this(context, null);
 	}
@@ -120,9 +125,17 @@ public class CustomViewBehind extends ViewGroup {
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		final int width = r - l;
 		final int height = b - t;
-		mContent.layout(0, 0, width-mWidthOffset, height);
+
+		int childR;
+		if (mWidthOffset == -1) {
+			childR = mWidth;
+		} else {
+			childR = width - mWidthOffset;
+		}
+
+		mContent.layout(0, 0, childR, height);
 		if (mSecondaryContent != null)
-			mSecondaryContent.layout(0, 0, width-mWidthOffset, height);
+			mSecondaryContent.layout(0, 0, childR, height);
 	}
 
 	@Override
@@ -130,9 +143,20 @@ public class CustomViewBehind extends ViewGroup {
 		int width = getDefaultSize(0, widthMeasureSpec);
 		int height = getDefaultSize(0, heightMeasureSpec);
 		setMeasuredDimension(width, height);
-		final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, width-mWidthOffset);
+
+		int childWidth;
+		if (mWidthOffset == -1) {
+			mWidth = Math.min(Math.max((width * mWidthPercent) / 100, mMinWidth), mMaxWidth);
+			Log.w("AndroIRC", "Setting behind width to " + mWidth);
+			childWidth = mWidth;
+		} else {
+			childWidth = width - mWidthOffset;
+		}
+
+		final int contentWidth = getChildMeasureSpec(widthMeasureSpec, 0, childWidth);
 		final int contentHeight = getChildMeasureSpec(heightMeasureSpec, 0, height);
 		mContent.measure(contentWidth, contentHeight);
+
 		if (mSecondaryContent != null)
 			mSecondaryContent.measure(contentWidth, contentHeight);
 	}
@@ -426,6 +450,13 @@ public class CustomViewBehind extends ViewGroup {
 	public void setSelectorBitmap(Bitmap b) {
 		mSelectorDrawable = b;
 		refreshDrawableState();
+	}
+
+	public void setWidthPercent(int percent, int min, int max) {
+		mWidthOffset = -1;
+		mWidthPercent = percent;
+		mMinWidth = min;
+		mMaxWidth = max;
 	}
 
 }

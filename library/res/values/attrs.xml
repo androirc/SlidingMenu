@@ -25,6 +25,9 @@
         <attr name="viewBehind" format="reference" />
         <attr name="behindOffset" format="dimension" />
         <attr name="behindWidth" format="dimension" />
+        <attr name="behindMinWidth" format="dimension" />
+        <attr name="behindMaxWidth" format="dimension" />
+        <attr name="behindWidthPercent" format="float" />
         <attr name="behindScrollScale" format="float" />
         <attr name="touchModeAbove">
             <enum name="margin" value="0" />

@@ -256,8 +256,22 @@ public class SlidingMenu extends RelativeLayout {
 			setBehindOffset(offsetBehind);
 		else if (widthBehind != -1)
 			setBehindWidth(widthBehind);
-		else
-			setBehindOffset(0);
+		else {
+
+			int percentWidthBehind = (int) ta.getFloat(R.styleable.SlidingMenu_behindWidthPercent, -1);
+			if (percentWidthBehind >= 0) {
+				int maxWidthBehind = (int) ta.getDimension(R.styleable.SlidingMenu_behindMaxWidth, -1);
+				int minWidthBehind = (int) ta.getDimension(R.styleable.SlidingMenu_behindMinWidth, -1);
+
+				if (maxWidthBehind == -1 || minWidthBehind == -1)
+					throw new IllegalStateException("When using behindWidthPercent, you must specify behindMinWidth and behindMaxWidth");
+
+				setBehindWidthPercent(percentWidthBehind, minWidthBehind, maxWidthBehind);
+			} else {
+				setBehindWidth(0);
+			}
+		}
+
 		float scrollOffsetBehind = ta.getFloat(R.styleable.SlidingMenu_behindScrollScale, 0.33f);
 		setBehindScrollScale(scrollOffsetBehind);
 		int shadowRes = ta.getResourceId(R.styleable.SlidingMenu_shadowDrawable, -1);
@@ -851,6 +865,16 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	public void clearIgnoredViews() {
 		mViewAbove.clearIgnoredViews();
+	}
+
+	/**
+	 * The the behind view width in percent
+	 * @param percent The desired width, in percent
+	 * @param min The minimum allowed width of the behind view
+	 * @param max The maximum allowed width of the behind view
+	 */
+	public void setBehindWidthPercent(int percent, int min, int max) {
+		mViewBehind.setWidthPercent(percent, min, max);
 	}
 
 	/**
