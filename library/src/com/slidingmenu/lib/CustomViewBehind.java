@@ -147,7 +147,6 @@ public class CustomViewBehind extends ViewGroup {
 		int childWidth;
 		if (mWidthOffset == -1) {
 			mWidth = Math.min(Math.max((width * mWidthPercent) / 100, mMinWidth), mMaxWidth);
-			Log.w("AndroIRC", "Setting behind width to " + mWidth);
 			childWidth = mWidth;
 		} else {
 			childWidth = width - mWidthOffset;
