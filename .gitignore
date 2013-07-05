@@ -18,3 +18,9 @@ gen
 *.project
 .DS_Store
 target/
+
+# Gradle
+.gradle
+local.properties
+gradle.properties
+build/

@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.4.+'
+    }
+}
+apply plugin: 'android-library'
+apply plugin: 'maven'
+
+
+archivesBaseName = 'slidingmenu'
+version = '1.3'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:13.0.0'
+}
+
+android {
+    sourceSets {
+      main {
+        manifest.srcFile 'AndroidManifest.xml'
+        java.srcDirs = ['src']
+        res.srcDirs = ['res']
+      }
+    }
+	
+    compileSdkVersion 17
+    buildToolsVersion "17.0.0"
+
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 17
+    }
+}
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			repository(url: "http://maven.madalynn.eu:8081/nexus/content/repositories/androirc") {
+				authentication(userName: maven_user, password: maven_password)
+				pom.artifactId = 'slidingmenu'
+				pom.groupId = 'com.jeremyfeinstein.slidingmenu'
+			}
+		}
+	}
+}
