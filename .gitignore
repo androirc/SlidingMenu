@@ -19,6 +19,8 @@ gen
 .DS_Store
 target/
 
+*.iml
+
 # Gradle
 .gradle
 local.properties

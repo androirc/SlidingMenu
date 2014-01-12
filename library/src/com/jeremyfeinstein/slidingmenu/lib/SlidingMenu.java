@@ -31,7 +31,7 @@ import com.jeremyfeinstein.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
 
 public class SlidingMenu extends RelativeLayout {
 
-	private static final String TAG = "SlidingMenu";
+	private static final String TAG = SlidingMenu.class.getSimpleName();
 
 	public static final int SLIDING_WINDOW = 0;
 	public static final int SLIDING_CONTENT = 1;
@@ -69,6 +69,8 @@ public class SlidingMenu extends RelativeLayout {
 	private CustomViewBehind mViewBehind;
 
 	private OnOpenListener mOpenListener;
+	
+	private OnOpenListener mSecondaryOpenListner;
 
 	private OnCloseListener mCloseListener;
 
@@ -213,6 +215,7 @@ public class SlidingMenu extends RelativeLayout {
 		mViewAbove.setOnPageChangeListener(new OnPageChangeListener() {
 			public static final int POSITION_OPEN = 0;
 			public static final int POSITION_CLOSE = 1;
+			public static final int POSITION_SECONDARY_OPEN = 2;
 
 			public void onPageScrolled(int position, float positionOffset,
 					int positionOffsetPixels) { }
@@ -222,6 +225,8 @@ public class SlidingMenu extends RelativeLayout {
 					mOpenListener.onOpen();
 				} else if (position == POSITION_CLOSE && mCloseListener != null) {
 					mCloseListener.onClose();
+				} else if (position == POSITION_SECONDARY_OPEN && mSecondaryOpenListner != null ) {
+					mSecondaryOpenListner.onOpen();
 				}
 			}
 		});
@@ -903,8 +908,19 @@ public class SlidingMenu extends RelativeLayout {
 		mOpenListener = listener;
 	}
 
+	
 	/**
-	 * Sets the OnCloseListener. {@link OnCloseListener#onClose() OnCloseListener.onClose()} will be called when the SlidingMenu is closed
+	 * Sets the OnOpenListner for secondary menu  {@link OnOpenListener#onOpen() OnOpenListener.onOpen()} will be called when the secondary SlidingMenu is opened
+	 * 
+	 * @param listener the new OnOpenListener
+	 */
+	
+	public void setSecondaryOnOpenListner(OnOpenListener listener) {
+		mSecondaryOpenListner = listener;
+	}
+	
+	/**
+	 * Sets the OnCloseListener. {@link OnCloseListener#onClose() OnCloseListener.onClose()} will be called when any one of the SlidingMenu is closed
 	 *
 	 * @param listener the new setOnCloseListener
 	 */
@@ -1006,8 +1022,6 @@ public class SlidingMenu extends RelativeLayout {
 		}
 		return true;
 	}
-	
-	private Handler mHandler = new Handler();
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void manageLayers(float percentOpen) {
@@ -1017,7 +1031,7 @@ public class SlidingMenu extends RelativeLayout {
 		final int layerType = layer ? View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_NONE;
 
 		if (layerType != getContent().getLayerType()) {
-			mHandler.post(new Runnable() {
+			getHandler().post(new Runnable() {
 				public void run() {
 					Log.v(TAG, "changing layerType. hardware? " + (layerType == View.LAYER_TYPE_HARDWARE));
 					getContent().setLayerType(layerType, null);

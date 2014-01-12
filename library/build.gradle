@@ -1,9 +1,10 @@
+
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.4.+'
+        classpath 'com.android.tools.build:gradle:0.7.+'
     }
 }
 apply plugin: 'android-library'
@@ -11,14 +12,14 @@ apply plugin: 'maven'
 
 
 archivesBaseName = 'slidingmenu'
-version = '1.3'
+version = '1.3.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:13.0.0'
+    compile 'com.android.support:support-v4:19.0.1'
 }
 
 android {
@@ -30,19 +31,19 @@ android {
       }
     }
 	
-    compileSdkVersion 17
-    buildToolsVersion "17.0.0"
+    compileSdkVersion 19
+    buildToolsVersion "19.0.1"
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 17
+        targetSdkVersion 19
     }
 }
 
 uploadArchives {
 	repositories {
 		mavenDeployer {
-			repository(url: "http://maven.madalynn.eu:8081/nexus/content/repositories/androirc") {
+			repository(url: "http://nexus.madalynn.eu/nexus/content/repositories/androirc") {
 				authentication(userName: maven_user, password: maven_password)
 				pom.artifactId = 'slidingmenu'
 				pom.groupId = 'com.jeremyfeinstein.slidingmenu'
