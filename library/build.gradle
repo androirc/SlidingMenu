@@ -43,7 +43,7 @@ android {
 uploadArchives {
 	repositories {
 		mavenDeployer {
-			repository(url: "http://nexus.madalynn.eu/nexus/content/repositories/androirc") {
+			repository(url: "http://nexus.madalynn.eu/nexus/content/repositories/snapshots") {
 				authentication(userName: maven_user, password: maven_password)
 				pom.artifactId = 'slidingmenu'
 				pom.groupId = 'com.jeremyfeinstein.slidingmenu'
